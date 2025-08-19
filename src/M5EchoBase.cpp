@@ -188,7 +188,7 @@ bool M5EchoBase::pi4ioe_init()
 
     // Enable pull-up resistors
     wire_write_byte(PI4IOE_ADDR, PI4IOE_REG_IO_PULLUP, 0xFF);  // Enable pull-up
-    wire_write_byte(PI4IOE_ADDR, PI4IOE_REG_IO_DIR, 0x6E);     // Set input=0, output=1
+    wire_write_byte(PI4IOE_ADDR, PI4IOE_REG_IO_DIR, 0x6F);     // Set input=0, output=1, set P0 as output
     wire_read_byte(PI4IOE_ADDR, PI4IOE_REG_IO_DIR);
 
     // Set outputs to 1
