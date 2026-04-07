@@ -14,17 +14,15 @@
 
 #ifdef ESP_IDF_VERSION
 #if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0))
-    #define USE_NEW_I2S_API 1
-    #include <ESP_I2S.h>
+#define USE_NEW_I2S_API 1
+#include <ESP_I2S.h>
 #else
-    #define USE_NEW_I2S_API 0
-    #include "driver/i2s.h"
-  #endif
-#else
-  #define USE_NEW_I2S_API 0
+#define USE_NEW_I2S_API 0
+#include "driver/i2s.h"
 #endif
-
-
+#else
+#define USE_NEW_I2S_API 0
+#endif
 
 /**
  * @brief Class to manage M5EchoBase operations including audio input/output and codec control.
@@ -148,20 +146,20 @@ public:
      * @param size Size of the audio buffer in bytes.
      * @return bool True if playback was successful, false if it failed.
      */
-    bool play(const uint8_t* buffer, int size);
+    bool play(const uint8_t* buffer, int size, bool clear_dma_buffer = true);
 
 private:
     // ES8311 codec handle
     es8311_handle_t es_handle;
 
     // I2S configuration
-  #if USE_NEW_I2S_API
+#if USE_NEW_I2S_API
     I2SClass I2S;
-  #else
+#else
     i2s_port_t i2s_num;
     i2s_config_t i2s_cfg;
     i2s_pin_config_t i2s_pin_cfg;
-  #endif
+#endif
 
     // I2C and I2S pin numbers
     int _i2c_sda;

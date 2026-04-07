@@ -3,22 +3,19 @@
  *
  * SPDX-License-Identifier: MIT
  *
- * @Hardwares: M5Atom series/M5AtomS3 series + Atomic Voice Base
  * @Hardwares: M5Atom series/M5AtomS3 series + Atomic Audio-3.5 Base
  *
  * @Dependent Library:
  * M5Atomic-EchoBase: https://github.com/m5stack/M5Atomic-EchoBase
+ *
+ * @Note: In this example, we recommend using an external microphone.
  *
  */
 
 #include <M5Unified.h>
 #include <M5EchoBase.h>
 
-#if defined(CONFIG_IDF_TARGET_ESP32S3)
-#define RECORD_SIZE (1024 * 200)
-#elif defined(CONFIG_IDF_TARGET_ESP32)
-#define RECORD_SIZE (1024 * 96)
-#endif
+#define RECORD_SIZE (1024 * 4)
 
 #if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0))
 M5EchoBase echobase;
@@ -55,7 +52,7 @@ void setup()
     }
 #endif
 
-    echobase.setSpeakerVolume(70);             // Set speaker volume to 70%.
+    echobase.setSpeakerVolume(65);             // Set speaker volume to 65%.
     echobase.setMicGain(ES8311_MIC_GAIN_0DB);  // Set microphone gain to 0dB.
 
     buffer = (uint8_t *)malloc(RECORD_SIZE);  // Allocate memory for the record buffer.
@@ -69,20 +66,18 @@ void setup()
     }
 
     Serial.println("EchoBase ready, start recording and playing!");
+    echobase.setMute(false);
 }
 
 void loop()
 {
-    Serial.println("Start recording...");
-    // Recording
-    echobase.setMute(false);
-    echobase.record(buffer, RECORD_SIZE);  // Record audio into buffer.
-    delay(100);
+    if (!echobase.record(buffer, RECORD_SIZE)) {
+        Serial.println("record failed");
+        return;
+    }
 
-    Serial.println("Start playing...");
-    // Playing
-    echobase.setMute(false);
-    delay(10);
-    echobase.play(buffer, RECORD_SIZE);  // Play audio from buffer.
-    delay(100);
+    if (!echobase.play(buffer, RECORD_SIZE, false)) {
+        Serial.println("play failed");
+        return;
+    }
 }
