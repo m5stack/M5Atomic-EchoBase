@@ -57,7 +57,7 @@ typedef enum {
 
 typedef enum {
     ES8311_FADE_OFF = 0,
-    ES8311_FADE_4LRCK, // 4LRCK means ramp 0.25dB/4LRCK
+    ES8311_FADE_4LRCK,  // 4LRCK means ramp 0.25dB/4LRCK
     ES8311_FADE_8LRCK,
     ES8311_FADE_16LRCK,
     ES8311_FADE_32LRCK,
@@ -85,13 +85,12 @@ typedef enum es8311_resolution_t {
 typedef struct es8311_clock_config_t {
     bool mclk_inverted;
     bool sclk_inverted;
-    bool mclk_from_mclk_pin; // true: from MCLK pin (pin no. 2), false: from SCLK pin (pin no. 6)
-    int  mclk_frequency;     // This parameter is ignored if MCLK is taken from SCLK pin
-    int  sample_frequency;   // in Hz
+    bool mclk_from_mclk_pin;  // true: from MCLK pin (pin no. 2), false: from SCLK pin (pin no. 6)
+    int mclk_frequency;       // This parameter is ignored if MCLK is taken from SCLK pin
+    int sample_frequency;     // in Hz
 } es8311_clock_config_t;
 
-void es8311_set_twowire(TwoWire* wire);
-
+void es8311_set_twowire(TwoWire *wire);
 
 /**
  * @brief Initialize ES8311
@@ -200,10 +199,10 @@ esp_err_t es8311_microphone_pgagain_config(es8311_handle_t dev, bool digital_mic
 
 /**
  * @brief Set ADC volume
- * 
+ *
  * @param dev ES8311 handle
  * @param[in] volume Volume level (0-100)
- * @return  
+ * @return
  *    - ESP_OK success
  *    - Else fail
  */
